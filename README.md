@@ -30,7 +30,7 @@ This is a small game implemented to test the networking solutions. The project u
 - Build & Run should open the game, click Create a game
 - Start the game in unity and click on Join
 
-##Network test
+## Network test
 
 You can use uEcho to create a clone (see the menu close to file/edit/asset/gameobject/component/uEcho/Windows/help in top of unity)   the uecho->"add new quick clone(s) " -> "ending with client" -> " only one". Then it will create a copy of your project. Launch another instance of unity using this new project (which will be called spacefight-2d-maste-Client) in the same root directory. Then choose the main menu scene.
 The two projects are now in synced, so when you change something on a project, it will replicate automatically on the other (just hit reload when asked too for scene update). 
