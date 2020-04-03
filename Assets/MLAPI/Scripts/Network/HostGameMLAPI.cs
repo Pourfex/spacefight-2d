@@ -21,6 +21,17 @@ public class HostGameMLAPI : MonoBehaviour, GameHoster {
         NetworkingManager.Singleton.StartHost();
     }
 
+    public void CreateStandaloneServer()
+    {
+        NetworkingManager.Singleton.OnClientConnectedCallback += clientId => { Debug.Log($"Client connected {clientId}"); };
+        NetworkingManager.Singleton.OnClientDisconnectCallback += clientId => { Debug.Log($"Client disconnected {clientId}"); };
+        NetworkingManager.Singleton.OnServerStarted += () => {
+            Debug.Log("Server started");
+            CreateServerEnvironment();
+        };
+        NetworkingManager.Singleton.StartServer();
+    }
+
     private void CreateServerEnvironment() {
         var progress = NetworkSceneManager.SwitchScene("Ingame");
         progress.OnClientLoadedScene += id => {

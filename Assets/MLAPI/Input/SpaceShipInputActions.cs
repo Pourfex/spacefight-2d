@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Input/SpaceShipInputActions.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/MLAPI/Input/SpaceShipInputActions.inputactions'
 
 using System;
 using System.Collections;
@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 
 public class @SpaceShipInputActions : IInputActionCollection, IDisposable
 {
-    private InputActionAsset asset;
+    public InputActionAsset asset { get; }
     public @SpaceShipInputActions()
     {
         asset = InputActionAsset.FromJson(@"{

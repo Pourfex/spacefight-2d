@@ -19,6 +19,10 @@ public class HostGame : MonoBehaviour, GameHoster
                     UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
                         .First(p => p.name == "NetworkManagerMLAPI").SetActive(true);
                     gameHoster = GameObject.Find("NetworkManagerMLAPI").GetComponent<GameHoster>();
+                    if (Application.isBatchMode)
+                    {
+                        gameHoster.CreateStandaloneServer();
+                    }
                     break;
                  case NETWORKINGSTACK.COLYSEUS : 
                      UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects()
@@ -27,6 +31,18 @@ public class HostGame : MonoBehaviour, GameHoster
                      break;    
             }
         }
+
+        if (Application.isBatchMode)
+        {
+            Application.targetFrameRate = 30;
+            Debug.Log("I'm in batch mode and will start standalone server");
+            gameHoster.CreateStandaloneServer();
+        }
+
+#if UNITY_SERVER 
+        
+        Debug.Log("I'm a Unity server build ! ");
+#endif
     }
 
     public void JoinGame()
@@ -38,6 +54,27 @@ public class HostGame : MonoBehaviour, GameHoster
     {
         gameHoster.CreateServer();
     }
+
+    public void CreateStandaloneServer()
+    {
+        gameHoster.CreateStandaloneServer();
+    }
+
+    private void LateUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            gameHoster.CreateServer();
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            gameHoster.JoinGame();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            gameHoster.CreateStandaloneServer();
+        }
+    }
 }
 
 public interface GameHoster
@@ -45,6 +82,8 @@ public interface GameHoster
     void JoinGame();
 
     void CreateServer();
+
+    void CreateStandaloneServer();
 }
 
 public enum NETWORKINGSTACK

@@ -44,14 +44,19 @@ namespace Player {
             transform.position = Vector2.zero;
         }
 
+        //On the standalone server, the networked transform are not updated so the current position of the player (and it's cannon) has not changed since the beginning, so bullets spawn at the spawnpoint of the player.
+        // We can change the networked transform behaviour to change on the server side as well
+        // or we can tell the client to spawn the object for others (because he know the actual position of transform)
+        // or we send in the rpc the position, rotation and velocity and change this method
+        
         [ServerRPC]
-        public void CmdFire() {
+        public void CmdFire(Vector3 position, Quaternion rotation, Vector2 velocity) {
             var actualRotation = transform.rotation;
-            Debug.Log(bulletPrefab.name);
-            var bullet = Instantiate(bulletPrefab, cannonTransform.position, actualRotation);
+            Debug.Log(bulletPrefab.name); 
+            var bullet = Instantiate(bulletPrefab, position, rotation);
             var bulletScript = bullet.GetComponent<Bullet>();
             var bulletRb = bullet.GetComponent<Rigidbody2D>();
-            bulletRb.velocity = rb.velocity;
+            bulletRb.velocity = velocity;
             bulletRb.AddRelativeForce(Vector2.up * bulletScript.speed);
 
             bullet.GetComponent<NetworkedObject>().Spawn();
@@ -79,7 +84,7 @@ namespace Player {
             leftRight.canceled += ctx => rotation = 0f;
             topBottom.started += ctx => thrust = ctx.ReadValue<float>();
             topBottom.canceled += ctx => thrust = 0f;
-            fireButton.performed += ctx => InvokeServerRpc(CmdFire);
+            fireButton.performed += ctx => InvokeServerRpc(CmdFire, cannonTransform.position, transform.rotation, rb.velocity);
         }
     }
 }

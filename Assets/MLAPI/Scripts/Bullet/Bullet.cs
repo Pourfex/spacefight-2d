@@ -6,7 +6,7 @@ public class Bullet : NetworkedBehaviour {
     public readonly float speed = 250f;
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (IsServer) {
+        if (true) { //IsServer
             if (other.gameObject.layer == LayerMask.NameToLayer(LayerHelper.ASTEROIDS)) {
                 Debug.Log("Bullet hit ASTEROIDS");
             } else if (other.gameObject.layer == LayerMask.NameToLayer(LayerHelper.PLAYERS)) {

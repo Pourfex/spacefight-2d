@@ -31,4 +31,9 @@ public class HostGameColyseus : MonoBehaviour, GameHoster
         colyseusClient.CreateRoom();
         //colyseusClient.JoinRoom();
     }
+
+    public void CreateStandaloneServer()
+    {
+        throw new System.NotImplementedException();
+    }
 }
